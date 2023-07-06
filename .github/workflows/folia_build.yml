@@ -9,8 +9,10 @@ jobs:
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
-        with:
-          repository: PaperMC/Folia
+      - name: git clone
+        run: |
+            git clone https://github.com/PaperMC/Folia folia
+            mv folia/* .
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Setup Gradle
