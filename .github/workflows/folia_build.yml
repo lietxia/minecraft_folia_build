@@ -9,40 +9,52 @@ jobs:
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       
       - name: Git Clone
         run: |
           git clone https://github.com/PaperMC/Folia folia
           mv folia/* . 
+
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
+
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: "temurin"
           java-version: "17"
+
       - name: Configure Git User Details
         run: git config --global user.email "actions@github.com" && git config --global user.name "Github Actions"
+
       - name: Apply Patches
         run: ./gradlew applyPatches
+
       - name: Build
         run: ./gradlew build
+
       - name: Create
         run: ./gradlew createMojmapPaperclipJar
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: BW-Folia-Bundler
           path: ./build/libs/folia-bundler-*.jar
           if-no-files-found: error
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: BW-Folia-Paperclip
           path: ./build/libs/folia-paperclip-*.jar
           if-no-files-found: error
+
       - name: Tag the repository
         id: tag
         run: |
@@ -53,6 +65,7 @@ jobs:
           git config user.email "lietxia@gmail.com"
           git tag -a $TAG -m "Published version $TAG" ${GITHUB_SHA}
           git push origin $TAG
+          
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
