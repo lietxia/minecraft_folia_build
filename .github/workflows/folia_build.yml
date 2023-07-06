@@ -9,8 +9,6 @@ jobs:
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false
       
       - name: Git Clone
         run: |
@@ -61,8 +59,6 @@ jobs:
           TAG=v$(date +"%Y.%m.%d-%H%M")
           echo "$TAG"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
-          git config user.name "lietxia"
-          git config user.email "lietxia@gmail.com"
           git tag -a $TAG -m "Published version $TAG" ${GITHUB_SHA}
           git push origin $TAG
           
