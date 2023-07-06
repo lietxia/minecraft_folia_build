@@ -40,7 +40,15 @@ jobs:
           name: BW-Folia-Paperclip
           path: ./build/libs/folia-paperclip-*.jar
           if-no-files-found: error
+      - name: Generate release tag
+        id: tag
+        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+        run: |
+          echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+          touch release.txt
+          echo "status=success" >> $GITHUB_OUTPUT
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
           files: ./build/libs/*.jar
