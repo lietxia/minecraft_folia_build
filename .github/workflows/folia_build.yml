@@ -9,10 +9,8 @@ jobs:
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
-      - name: git clone
-        run: |
-            git clone https://github.com/PaperMC/Folia folia
-            mv folia/* .
+        with:
+          repository: PaperMC/Folia
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Setup Gradle
@@ -45,6 +43,8 @@ jobs:
       - name: Generate release tag
         id: tag
         run: |
+          git config user.name "GitHub Action"
+          git config user.email "bloop@blorp.com"
           echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
           echo "status=success" >> $GITHUB_OUTPUT
       - name: Release
