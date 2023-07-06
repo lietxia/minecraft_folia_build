@@ -58,7 +58,7 @@ jobs:
       - name: Tag the repository
         id: tag
         run: |
-          TAG=v$(date -Iseconds | sed 's/[T:\+]/-/g')
+          TAG=v$(date +"%Y.%m.%d-%H%M")
           echo "$TAG"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           git config user.name "lietxia"
